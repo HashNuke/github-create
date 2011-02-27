@@ -2,30 +2,35 @@
 require File.expand_path '../lib/github-create', File.dirname(__FILE__)
 require 'optparse'
 
-private = false
-
-repo = nil
+access = :public
+repoName = nil
+remoteName = "origin"
 
 OptionParser.new do |option|
   option.banner = "github-create - to help you create github repos for your projects"
 
   option.on("-p", "--private", "create private repo") do
-    private = true
+    access = :private
   end
-  
-  
-  option.on("-r", "--reset", "reset github credentials (username is stored)") do
-    GithubCreate.reset_credentials
+
+  option.on("-clear", "--clear", "clear github username, stored in $HOME/.github-create") do
+    GithubCreate.resetCredentials
     exit
   end
 
   option.on("-c NAME", "--c NAME", "specifying the name of the repo to create") do |n|
-    repo
+    repoName = n
   end
 
+  option.on("-remote NAME", "--remote NAME", "set the origin name. If not specified origin or github is used") do |name|
+    remoteName = name
+  end
+  
 end.parse!
 
 # parse the t hash to check if there are any repos to be created
-unless repo.nil?
-  puts "create " << repo
+unless repoName.nil?
+  puts "repo: " << repoName
+  puts "remote: " << remoteName
+  GithubCreate.setupRepo repoName, remoteName, access
 end
