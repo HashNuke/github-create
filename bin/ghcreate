@@ -1,17 +1,31 @@
 #!/usr/bin/env ruby
-
+require File.expand_path '../lib/github-create', File.dirname(__FILE__)
 require 'optparse'
+
+private = false
+
+repo = nil
 
 OptionParser.new do |option|
   option.banner = "github-create - to help you create github repos for your projects"
 
-  option.on("-r", "--reset", "Reset github credentials") do
+  option.on("-p", "--private", "create private repo") do
+    private = true
+  end
+  
+  
+  option.on("-r", "--reset", "reset github credentials (username is stored)") do
     GithubCreate.reset_credentials
     exit
   end
 
-  option.on("NAME", "NAME", "specifying the name of the repo to create") do |n|
-    print "Create new repo: " << n
+  option.on("-c NAME", "--c NAME", "specifying the name of the repo to create") do |n|
+    repo
   end
-  
+
 end.parse!
+
+# parse the t hash to check if there are any repos to be created
+unless repo.nil?
+  puts "create " << repo
+end
