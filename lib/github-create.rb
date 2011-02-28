@@ -12,7 +12,7 @@ class GithubCreate
         File.delete configFilePath
         puts "Username in $HOME/.github-create cleared"
       rescue
-        puts "Oops! could not delete file"
+        puts "Oops! could not config delete file"
       end
     end
   end
