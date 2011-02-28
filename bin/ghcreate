@@ -13,7 +13,7 @@ OptionParser.new do |option|
     access = :private
   end
 
-  option.on("-clear", "--clear", "clear github username, stored in $HOME/.github-create") do
+  option.on("--clear", "--clear", "clear github username, stored in $HOME/.github-create") do
     GithubCreate.resetCredentials
     exit
   end

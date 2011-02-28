@@ -1,4 +1,5 @@
 require 'etc'
+require 'httparty'
 
 class GithubCreate
 
@@ -22,10 +23,11 @@ class GithubCreate
     pw = getCredentials
 
     # if cannot create repo return
-    unless createRepo(remote, access)
+    unless createRepo(remote, access, pw)
       return
     end
 
+    return
     # get remote url of the repo
     remoteUrl = getRemoteUrl(repo, pw)
 
@@ -44,8 +46,11 @@ class GithubCreate
   end
   
   
-  def self.createRepo(repo, access)
-    # TODO
+  def self.createRepo(repo, access, pw)
+    username = readCredentialsFromFile
+    result = makeCreateRequest username, pw, repo, access
+    puts result
+    puts result.class
   end
 
   def self.createLocalRepo
@@ -98,15 +103,14 @@ class GithubCreate
     if username.nil?
       username = createConfigFile
     end
-    puts "Password for " << username << ":"
-    return gets
+    print "Password for " << username << ": "
+    return gets.chomp
   end
 
   # only stores the github username
   def self.readCredentialsFromFile
     if File.exists? configFilePath
       username = File.open(configFilePath, "r").readlines.join ""
-      puts username
       return username
     else
       return nil
@@ -116,7 +120,7 @@ class GithubCreate
   def self.createConfigFile
     f = File.open configFilePath, "w+"
     print "Enter your github username: "
-    username = gets
+    username = gets.chomp
     f << username
     f.close
     return username
@@ -124,7 +128,26 @@ class GithubCreate
   
   def self.configFilePath
     userDir = Etc.getpwuid.dir
-    filePath = userDir << "|" << ".github-create"
+    filePath = userDir << "/" << ".github-create"
   end
 
+  def self.makeCreateRequest(username, pw, repoName, access)
+    if access == :public
+      accessKey = 1
+    else
+      accessKey = 0
+    end
+
+    options = {
+      :query=>{
+        :name=>repoName,
+        :public=>accessKey
+      }
+    }
+
+    basic_auth username, pw
+    
+    self.post('http://github.com/api/v2/json/repos/create', options)
+  end
+  
 end
