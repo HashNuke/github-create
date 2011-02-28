@@ -1,18 +1,23 @@
+require 'etc'
+
 class GithubCreate
 
   def self.resetCredentials
-    puts "credentials reset"
+    if File.exists? configFilePath
+      begin
+        File.delete configFilePath
+        puts "Username in $HOME/.github-create cleared"
+      rescue
+        puts "Oops! could not delete file"
+      end
+    end
   end
 
   def self.setupRepo(repo, remote, access)
     createLocalRepo unless checkIfLocalRepoExists
 
-    # TODO check for username stored in .github-create or get username
-    
-    # get password from user
-    pw = gets
-    
-   
+    pw = getCredentials
+
     # if cannot create repo return
     unless createRepo(remote, access)
       return
@@ -21,11 +26,13 @@ class GithubCreate
     # get remote url of the repo
     remoteUrl = getRemoteUrl(repo, pw)
 
+    # if remoteUrl is nil return
     if remoteUrl.nil?
       puts "something went wrong..."
       return
     end
-    
+
+    # setup remote in local repo
     unless setupRemote
       return
     end
@@ -81,5 +88,41 @@ class GithubCreate
   def getRemoteUrl(repo)
     # TODO
   end
+
+  # this returns the password for use in the other methods
+  def getCredentials
+    username = readCredentialsFromFile
+    if username.nil?
+      username = createConfigFile
+    end
+    puts "Password for " << username << ":"
+    return gets
+  end
+
+  # only stores the github username
+  def readCredentialsFromFile
+    
+    if File.exists? configFilePath
+      username = File.open(configFilePath, "r").readlines.join ""
+      puts username
+      return username
+    else
+      return nil
+    end
+  end
+
+  def createConfigFile
+    f = File.open configFilePath, "w+"
+    print "Enter your github username: "
+    username = gets
+    f << username
+    f.close
+    return username
+  end
   
+  def configFilePath
+    userDir = Etc.getpwuid.dir
+    filePath = userDir << "|" << ".github-create"
+  end
+
 end
