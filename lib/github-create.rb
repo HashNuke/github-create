@@ -2,6 +2,9 @@ require 'etc'
 
 class GithubCreate
 
+  include HTTParty
+  base_uri = "http://github.com/api/v2/json"
+  
   def self.resetCredentials
     if File.exists? configFilePath
       begin
@@ -55,7 +58,7 @@ class GithubCreate
     return true
   end
 
-  def setupRemote(remoteName, remoteUrl)
+  def self.setupRemote(remoteName, remoteUrl)
     # check for remote and create it
     if checkRemoteExists(remoteName)
       if remoteName == "origin"
@@ -85,12 +88,12 @@ class GithubCreate
     return false
   end
 
-  def getRemoteUrl(repo)
+  def self.getRemoteUrl(repo)
     # TODO
   end
 
   # this returns the password for use in the other methods
-  def getCredentials
+  def self.getCredentials
     username = readCredentialsFromFile
     if username.nil?
       username = createConfigFile
@@ -100,8 +103,7 @@ class GithubCreate
   end
 
   # only stores the github username
-  def readCredentialsFromFile
-    
+  def self.readCredentialsFromFile
     if File.exists? configFilePath
       username = File.open(configFilePath, "r").readlines.join ""
       puts username
@@ -111,7 +113,7 @@ class GithubCreate
     end
   end
 
-  def createConfigFile
+  def self.createConfigFile
     f = File.open configFilePath, "w+"
     print "Enter your github username: "
     username = gets
@@ -120,7 +122,7 @@ class GithubCreate
     return username
   end
   
-  def configFilePath
+  def self.configFilePath
     userDir = Etc.getpwuid.dir
     filePath = userDir << "|" << ".github-create"
   end
