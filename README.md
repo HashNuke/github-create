@@ -28,3 +28,10 @@ Options
 `-r NAME, --remote NAME`         set the origin name. If not specified origin or github is used
 
 `-h, --help`                displays help message
+
+
+TODO
+-------
+
+* Password is being typed in plain text in the terminal. That has to be masked.
+* Try and make error messages of system() calls hidden.
