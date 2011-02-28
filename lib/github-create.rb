@@ -29,17 +29,10 @@ class GithubCreate
       return
     end
 
-    puts repoUrl
-    
-    return
-    # get remote url of the repo
-    remoteUrl = getRemoteUrl(repo, pw)
+    remoteUrl = repourl.sub("https://", "git@").sub("/",":") << ".git"
 
-    # if remoteUrl is nil return
-    if remoteUrl.nil?
-      puts "something went wrong..."
-      return
-    end
+    # remote url of the repo
+    remoteUrl = getRemoteUrl(repo, pw)
 
     # setup remote in local repo
     unless setupRemote
@@ -53,13 +46,13 @@ class GithubCreate
   def self.createRepo(repo, access, pw)
     username = readCredentialsFromFile
     result = makeCreateRequest username, pw, repo, access
-    puts result
-    if not result["error"].nil?
-      puts "Repository is at " << result["repository"]["url"]
-      return result["repository"]["url"]
-    else
+
+    if result.has_key?('error')
       puts "Error: " << result["error"]
       return nil
+    else
+      puts "Repository is at " << result["repository"]["url"]
+      return result["repository"]["url"]
     end
     
   end
