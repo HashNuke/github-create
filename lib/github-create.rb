@@ -13,13 +13,12 @@ class GithubCreate
     pw = gets
     
    
-    # create remote repo
-    if createRepo(remote, access)
-      
-    else
+    # if cannot create repo return
+    unless createRepo(remote, access)
       return
     end
 
+    # get remote url of the repo
     remoteUrl = getRemoteUrl(repo, pw)
 
     if remoteUrl.nil?
@@ -27,30 +26,16 @@ class GithubCreate
       return
     end
     
-    # check for remote and create it
-    if checkRemoteExists(remote)
-      if remote == "origin"
-        remote = "github"
-        addRemote(remote) unless checkRemoteExists(remote)
-      else
-        puts "Seems like remote with that name already exists!"
-        puts "Here's the remote url of the repo to add it yourself: " << remoteUrl
-        return
-      end
-    else
-      addRemote(remote)
+    unless setupRemote
+      return
     end
     
-    # control flow reaches here only if remote is added, so display msg
-    puts "Added remote " << remote << " with url " << remoteUrl
-      
     puts "setup done"
-    
   end
   
   
   def self.createRepo(repo, access)
-    
+    # TODO
   end
 
   def self.createLocalRepo
@@ -63,13 +48,38 @@ class GithubCreate
     return true
   end
 
-  def self.checkIfRemoteExists
+  def setupRemote(remoteName, remoteUrl)
+    # check for remote and create it
+    if checkRemoteExists(remoteName)
+      if remoteName == "origin"
+        remoteName = "github"
+        addRemote(remoteName, remoteUrl) unless checkRemoteExists(remoteName)
+      else
+        puts "Seems like remote with that name already exists!"
+        puts "Here's the remote url of the repo to add it yourself: " << remoteUrl
+        return false
+      end
+    else
+      addRemote(remoteName, remoteUrl)
+    end
+      
+    # control flow reaches here only if remote is added, so display msg
+    puts "Added remote " << remoteName << " with url " << remoteUrl
+    return true
   end
 
-  def self.addRemote()
+  def self.checkIfRemoteExists(remote)
+    return true if system("git remote show "<< remote)
+    return false
+  end
+
+  def self.addRemote(remoteName, remoteUrl)
+    return true if system("git remote add " << remoteName << " " << remoteUrl)
+    return false
   end
 
   def getRemoteUrl(repo)
+    # TODO
   end
   
 end
