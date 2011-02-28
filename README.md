@@ -17,12 +17,12 @@ Usage
 Options
 --------
 
-`-c, --c NAME`              specifying the name of the repo to create
+`-c NAME, --create NAME`              specifying the name of the repo to create
 
 `-p, --private`             create private repo
 
 `--clear`                   clear github username, stored in $HOME/.github-create
 
-`-r, --remote NAME`         set the origin name. If not specified origin or github is used
+`-r NAME, --remote NAME`         set the origin name. If not specified origin or github is used
 
 `-h, --help`                displays help message

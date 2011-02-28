@@ -9,7 +9,7 @@ remoteName = "origin"
 OptionParser.new do |option|
   option.banner = "github-create - to help you create github repos for your projects"
 
-  option.on("-p", "--private", "create private repo") do
+  option.on("-p", "--private", "creates private repo when this option is added") do
     access = :private
   end
 
@@ -18,11 +18,11 @@ OptionParser.new do |option|
     exit
   end
 
-  option.on("-c NAME", "--c NAME", "specifying the name of the repo to create") do |n|
+  option.on("-c NAME", "--create NAME", "specifying the name of the repo to create") do |n|
     repoName = n
   end
 
-  option.on("-remote NAME", "--remote NAME", "set the origin name. If not specified origin or github is used") do |name|
+  option.on("-r NAME", "--remote NAME", "set the origin name. If not specified origin or github is used") do |name|
     remoteName = name
   end
   
