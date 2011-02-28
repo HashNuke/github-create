@@ -23,10 +23,14 @@ class GithubCreate
     pw = getCredentials
 
     # if cannot create repo return
-    unless createRepo(repo, access, pw)
+    repoUrl = createRepo(repo, access, pw)
+    if repoUrl.nil?
+      puts "Oops! couldn't create repo"
       return
     end
 
+    puts repoUrl
+    
     return
     # get remote url of the repo
     remoteUrl = getRemoteUrl(repo, pw)
@@ -50,7 +54,14 @@ class GithubCreate
     username = readCredentialsFromFile
     result = makeCreateRequest username, pw, repo, access
     puts result
-    puts result["repository"]
+    if not result["error"].nil?
+      puts "Repository is at " << result["repository"]["url"]
+      return result["repository"]["url"]
+    else
+      puts "Error: " << result["error"]
+      return nil
+    end
+    
   end
 
   def self.createLocalRepo
@@ -146,7 +157,6 @@ class GithubCreate
     }
 
     basic_auth username, pw
-    
     self.post('http://github.com/api/v2/json/repos/create', options)
   end
   
