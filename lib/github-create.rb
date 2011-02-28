@@ -29,17 +29,16 @@ class GithubCreate
       return
     end
 
-    remoteUrl = repourl.sub("https://", "git@").sub("/",":") << ".git"
+    remoteUrl = repoUrl.sub("https://", "git@").sub("/",":") << ".git"
 
     # remote url of the repo
-    remoteUrl = getRemoteUrl(repo, pw)
+    # remoteUrl = getRemoteUrl(repo, pw)
 
     # setup remote in local repo
-    unless setupRemote
+    unless setupRemote(remote, remoteUrl)
       return
     end
     
-    puts "setup done"
   end
   
   
@@ -69,10 +68,10 @@ class GithubCreate
 
   def self.setupRemote(remoteName, remoteUrl)
     # check for remote and create it
-    if checkRemoteExists(remoteName)
+    if checkIfRemoteExists(remoteName)
       if remoteName == "origin"
         remoteName = "github"
-        addRemote(remoteName, remoteUrl) unless checkRemoteExists(remoteName)
+        addRemote(remoteName, remoteUrl) unless checkIfRemoteExists(remoteName)
       else
         puts "Seems like remote with that name already exists!"
         puts "Here's the remote url of the repo to add it yourself: " << remoteUrl
