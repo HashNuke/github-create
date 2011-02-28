@@ -18,7 +18,7 @@ OptionParser.new do |option|
     exit
   end
 
-  option.on("-c NAME", "--create NAME", "specifying the name of the repo to create") do |n|
+  option.on("-c NAME", "--create NAME", "specifies the name of the repo to create") do |n|
     repoName = n
   end
 
