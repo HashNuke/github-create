@@ -23,7 +23,7 @@ class GithubCreate
     pw = getCredentials
 
     # if cannot create repo return
-    unless createRepo(remote, access, pw)
+    unless createRepo(repo, access, pw)
       return
     end
 
@@ -50,7 +50,7 @@ class GithubCreate
     username = readCredentialsFromFile
     result = makeCreateRequest username, pw, repo, access
     puts result
-    puts result.class
+    puts result["repository"]
   end
 
   def self.createLocalRepo
