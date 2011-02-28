@@ -17,9 +17,9 @@ Usage
 Options
 --------
 
-`-c NAME, --create NAME`              specifying the name of the repo to create
+`-c NAME, --create NAME`              specify the name of the repo to create
 
-`-p, --private`             create private repo
+`-p, --private`             creates private repo when this option is used
 
 `--clear`                   clear github username, stored in $HOME/.github-create
 
