@@ -30,8 +30,3 @@ Options
 `-h, --help`                displays help message
 
 
-TODO
--------
-
-* Password is being typed in plain text in the terminal. That has to be masked.
-* Try and make error messages of system() calls hidden.
