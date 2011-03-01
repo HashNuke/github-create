@@ -103,7 +103,7 @@ class GithubCreate
     if username.nil?
       username = createConfigFile
     end
-    print "Password for " << username << ": "
+    print "Github password for " << username << ": "
 
     system "stty -echo"
     pw = gets.chomp

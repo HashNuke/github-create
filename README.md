@@ -1,7 +1,9 @@
 github-create
 ==============
 
-Adds an executable `ghcreate` which will help you by creating github repos from your command line
+Adds an executable `ghcreate` which will help you by creating github repos from your command line.
+
+*Won't work with windows*
 
 Install
 --------
