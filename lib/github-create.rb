@@ -62,7 +62,7 @@ class GithubCreate
   end
   
   def self.checkIfLocalRepoExists
-    system("git status -s")
+    system("git status -s > /dev/null 2>&1")
   end
 
   def self.setupRemote(remoteName, remoteUrl)
