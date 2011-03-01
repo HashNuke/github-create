@@ -107,7 +107,8 @@ class GithubCreate
 
     system "stty -echo"
     pw = gets.chomp
-    system "stty -echo"
+    system "stty echo"
+    puts
     return pw
   end
 

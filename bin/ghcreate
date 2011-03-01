@@ -30,7 +30,7 @@ end.parse!
 
 # parse the t hash to check if there are any repos to be created
 unless repoName.nil?
-  puts "repo: " << repoName
-  puts "remote: " << remoteName
+  puts "Repo name: " << repoName
+  puts "Remote name: " << remoteName
   GithubCreate.setupRepo repoName, remoteName, access
 end
