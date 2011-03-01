@@ -57,13 +57,12 @@ class GithubCreate
   end
 
   def self.createLocalRepo
-    system('git init')
+    system("git init")
     puts "Create local repo: git init"
   end
   
   def self.checkIfLocalRepoExists
-    return false if `git status -s`.length == 0
-    return true
+    system("git status -s")
   end
 
   def self.setupRemote(remoteName, remoteUrl)
@@ -87,17 +86,15 @@ class GithubCreate
   end
 
   def self.checkIfRemoteExists(remote)
-    return true if system("git remote show "<< remote)
-    return false
+    return system("git remote show "<< remote << "> /dev/null 2>&1")
   end
 
   def self.addRemote(remoteName, remoteUrl)
-    return true if system("git remote add " << remoteName << " " << remoteUrl)
-    return false
+    system("git remote add " << remoteName << " " << remoteUrl)
   end
 
   def self.getRemoteUrl(repo)
-    # TODO
+    # TODO. not required right now
   end
 
   # this returns the password for use in the other methods
