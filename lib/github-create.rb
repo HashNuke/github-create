@@ -104,7 +104,11 @@ class GithubCreate
       username = createConfigFile
     end
     print "Password for " << username << ": "
-    return gets.chomp
+
+    system "stty -echo"
+    pw = gets.chomp
+    system "stty -echo"
+    return pw
   end
 
   # only stores the github username
